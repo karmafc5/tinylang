@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "TinyLang Playground"
+description = "An interactive playground for TinyLang, a small original programming language. Write programs, provide input, run them through a compiler pipeline, and inspect output and errors."
+version = "1.0.0"
+id = "artifacts/tinylang-playground"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24939
+
+[services.development]
+run = "pnpm --filter @workspace/tinylang-playground run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/tinylang-playground", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/tinylang-playground/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24939"
+BASE_PATH = "/"
